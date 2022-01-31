@@ -1,0 +1,15 @@
+<h1>You are login in</h1>
+<button onclick ="Logout()">Log OUT</button>
+<script>
+    const logout = () =>{
+            fetch("http://localhost:3000/api/user/Logout", {
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                method: "GET",
+            }).then(data => {
+        
+                window.location.href ="/";
+            })
+    }
+</script>

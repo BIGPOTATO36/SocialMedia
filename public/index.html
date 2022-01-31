@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE-edge">
+    <title>The Croods</title>
+</head>
+
+<body>
+    <h1>
+        THe Croods Login Page:
+    </h1>
+    <h2>
+        Register
+    </h2>
+    <p>username:</p>
+    <input type="text" id="usernameReg">
+    <p>email</p>
+    <input id="emailReg">
+    <p>Password</p>
+    <input id=passwordReg type="password">
+    <p id=></p>
+    <br /> <br />
+    <p id="statusReg"></p>
+    <button onclick="Register()">Register Account</button>
+
+    <h2>
+        Login
+    </h2>
+    <p>username:</p>
+    <input type="text" id="usernameLog">
+    <p>Password</p>
+    <input id=passwordLog type="password">
+    <br /> <br />
+    <p id=statusLog></p>
+    <button onclick="Login()">Login</button>
+    <script>
+        const Login = () => {
+            //gets the value of the inut feild of username and passwor dfpr login
+            const username = document.getElementById("usernameLog").value;
+            const password = document.getElementById("passwordLog").value;
+
+
+            //sends a POST request to the login route to login
+            fetch("http://localhost:3000/api/user/Login", {
+
+                //tells the server it wil ne recieving JSON
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                //define what type of request this is 
+                method: "POST",
+                //takes a JSON object from the login page and stringfies
+                body: JSON.stringify({
+                    username: username,
+                    password: password
+                })
+                //after respones is recieved converts respones string to JSON
+            }).then(res => res.json()).then(data => {
+                //if there is an error, print the error message to the DOM page 
+                if (data.error) {
+                    document.getElementById("statusReg").innHTML = `Status : ${data.message}`;
+                    return
+                }
+                // if everything goes well, redirect to homepage since you are now logged in 
+                window.location.href = "/homepage"
+                console.log(data)
+
+            })
+
+        }
+        //same comments apply here 
+        const Register = () => {
+            const username = document.getElementById("usernameReg").value;
+            const password = document.getElementById("passwordReg").value;
+            const email = document.getElementById("emailReg").value;
+            fetch("http://localhost:3000/api/user/Register", {
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                method: "POST",
+                body: JSON.stringify({
+                    username: username,
+                    password: password,
+                    email: email
+                })
+            }).then(res => res.json()).then(data => {
+                if (data.error) {
+                    document.getElementById("statusReg").innerHTML = `Status : ${data.message}`;
+                    return
+                }
+                window.location.href = "/homepage"
+                console.log(data)
+
+            })
+        }
+    </script>
+</body>
